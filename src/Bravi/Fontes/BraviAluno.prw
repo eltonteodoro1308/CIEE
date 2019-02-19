@@ -102,9 +102,10 @@ Serializa a inst√¢ncia da Classe no formato json
 @author Elton Teodoro Alves
 @since 08/02/2019
 @version 12.1.17
+@param nOpc, Numeric, CÛdigo da OperaÁ„o 3=Inclui
 @return characters, Json com os dados da inst√¢ncia
 /*/
-Method GetJson() Class BraviAluno
+Method GetJson( nOpc ) Class BraviAluno
 
 	Local cRet   := ''
 	Local uValor := Nil
@@ -113,15 +114,19 @@ Method GetJson() Class BraviAluno
 
 	For nX := 1 To Len( ::Campos )
 
-		uValor := If( ValType( ::Campos[ nX, 2 ] ) == 'C', '"' + ::Campos[ nX, 2 ] + '"'  , uValor )
-		uValor := If( ValType( ::Campos[ nX, 2 ] ) == 'N', cValToChar( ::Campos[ nX, 2 ] ), uValor )
-		uValor := If( ValType( ::Campos[ nX, 2 ] ) $ 'CN', uValor, '' )
+		 If ( nOpc == 3 .And. ::Campos[ nX, 1 ] # "id" ) .Or. ( nOpc # 3 .And. nOpc # 7 )
 
-		cRet += '"' + ::Campos[ nX, 1 ] + '": ' + uValor
+			uValor := If( ValType( ::Campos[ nX, 2 ] ) == 'C', '"' + AllTrim( ::Campos[ nX, 2 ] ) + '"'  , uValor )
+			uValor := If( ValType( ::Campos[ nX, 2 ] ) == 'N', cValToChar( ::Campos[ nX, 2 ] ), uValor )
+			uValor := If( ValType( ::Campos[ nX, 2 ] ) $ 'CN', uValor, '' )
 
-		If nX < Len( ::Campos )
+			cRet += '"' + ::Campos[ nX, 1 ] + '": ' + uValor
 
-			cRet += ','
+			If nX < Len( ::Campos )
+
+				cRet += ','
+
+			End If
 
 		End If
 

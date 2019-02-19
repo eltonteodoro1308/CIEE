@@ -59,8 +59,8 @@ Method GetJson() Class BraviAuth
 	Local cRet := ''
 
 	cRet += '{'
-	cRet += '"usernamex": "' + ::username + '",'
-	cRet += '"passwordx": "' + ::password + '"'
+	cRet += '"username": "' + ::username + '",'
+	cRet += '"password": "' + ::password + '"'
 	cRet += '}'
 
 Return cRet

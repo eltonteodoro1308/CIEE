@@ -20,13 +20,13 @@ User Function Gp010ValPE()
 	Local lRet := .t.
 
 	//Verifica se o centro de custo possui parametrizacao de codigo de municipio, quando filial 01 CLT
-	If lRet .and. right(cFilAnt,2) == '01'
-		CTT->(dbsetorder(1))
-		If !(CTT->(dbseek(xFilial("CTT")+M->RA_CC))) .or. empty(CTT->CTT_XUF) .or. empty(CTT->CTT_XCODMU)
-			MsgStop("O centro de custo selecionado não possui parametrização do local para feriados municipais. Ajuste o cadastro do centro de custo.")
-			lRet := .f.
+		If lRet .and. right(cFilAnt,2) == '01'
+			CTT->(dbsetorder(1))
+			If !(CTT->(dbseek(xFilial("CTT")+M->RA_CC))) .or. empty(CTT->CTT_XUF) .or. empty(CTT->CTT_XCODMU)
+				MsgStop("O centro de custo selecionado não possui parametrização do local para feriados municipais. Ajuste o cadastro do centro de custo.")
+				lRet := .f.
+			EndIf
 		EndIf
-	EndIf
 
 	//****************************************************************
 	// ATENCAO: O trecho abaixo devera ser a ultima validacao deste PE
@@ -34,19 +34,13 @@ User Function Gp010ValPE()
 	//          caso por algum motivo este PE retorne Falso apos estas
 	//          gravacoes, os registros ficarao orfaos.
 	//****************************************************************
-	If lRet
-		lRet := U_CGPEE02()
-	EndIf
+		If lRet
+			lRet := U_CGPEE02()
+		EndIf
 
 	//****************************************************************
 	//Se tudo acima estiver ok e o funcionário for estagiário
 	//Faz integração com o Bravi
 	//****************************************************************
-
-	If lRet .And. Right( SRA->RA_FILIAL, 1 ) == '1' // Verifica se é Aluno
-
-		lRet := lRet .And. U_IntegBravi()
-
-	End If
 
 Return(lret)

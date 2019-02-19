@@ -57,41 +57,122 @@ Method New( cUrl, cUserName, cPassWord ) Class BraviApi
 
 Return Self
 
-/*/{Protheus.doc} Consulta
-Método de consulta da classe BraviApi
+/*/{Protheus.doc} Inclui
+Método de Inclusão da classe BraviApi
 @author Elton Teodoro Alves
 @since 08/02/2019
 @version 12.1.17
 @return Logical, Indica se a operação foi bem sucedida
-@param cId, characters, Id do aluno a ser pesquisado
-@param cJson, characters, Variável passada por referência que será populada com o Json de retorno
+@param cJsonAluno, characters, Variável com o Json que representam o aluno a ser incluído
 @param cError, characters, Variável passada por referência que será populada com a mensagem de erro retornada pelo Web Service
+@param cId, characters, Variável passada por referência que será populada com o id do estagiário incluido
 /*/
-Method Consulta( cId, cJson, cError ) Class BraviApi
+Method Inclui( cJsonAluno, cError, cId ) Class BraviApi
 
-	Local oRestClient := FWRest():New( ::cUrl )
-	Local cPath       := '/v1/alunos/' + AllTrim( cId )
+	Local lRet        := .T.
+	Local cPath       := '/v1/alunos'
 	Local aHeader     := {}
+	Local cHeaderRet  := ''
 	Local cToken      := ''
-	Local lRet        := .F.
-
-	oRestClient:setPath( cPath )
+	Local cError      := ''
+	Local cResponse   := ''
+	Local oJson       := Nil
 
 	If lRet := GetToken( ::cUrl, ::cUserName, ::cPassWord, @cToken, @cError )
 
-		aAdd( aHeader, 'Authorization: ' + cToken )
+		aAdd( aHeader, 'Authorization: ' + cToken       )
 		aAdd( aHeader, 'Accept: application/json'       )
 		aAdd( aHeader, 'Content-Type: application/json' )
 
-		If lRet := oRestClient:Get( aHeader )
+		cResponse := HTTPQuote ( ::cUrl + cPath, 'POST', , EncodeUtf8( '[' + cJsonAluno + ']' ), 120, aHeader, @cHeaderRet )
 
-			cJson := oRestClient:GetResult()
+		FWJsonDeserialize( cResponse, @oJson )
+
+		lRet := ValType( oJson ) == 'A'
+
+		If lRet
+
+			cId := oJson[ 1 ]:id
 
 		Else
 
-			cError := oRestClient:GetLastError()
+			cError := oJson:errors:description + CRLF
 
-		End IF
+			If ValType( oJson:errors:message ) == 'C'
+
+				cError += oJson:errors:message
+
+			ElseIf ValType( oJson:errors:message ) == 'O'
+
+				aErrors := aClone( ClassDataArr( oJson:errors:message:aluno ) )
+
+				For nX := 1 To Len( aErrors )
+
+					cError += aErrors[ nX, 1 ] + ': ' + aErrors[ nX, 2 ] + CRLF
+
+				Next nX
+
+			End If
+
+		End If
+
+	End If
+
+Return lRet
+
+/*/{Protheus.doc} Altera
+Método de Alteração da classe BraviApi
+@author Elton Teodoro Alves
+@since 08/02/2019
+@version 12.1.17
+@return Logical, Indica se a operação foi bem sucedida
+@param cJsonAluno, characters, Variável com o Json que representam o aluno a ser incluído
+@param cError, characters, Variável passada por referência que será populada com a mensagem de erro retornada pelo Web Service
+/*/
+Method Altera( cJsonAluno, cError ) Class BraviApi
+
+	Local lRet        := .T.
+	Local cPath       := '/v1/alunos'
+	Local aHeader     := {}
+	Local cHeaderRet  := ''
+	Local cToken      := ''
+	Local cError      := ''
+	Local cResponse   := ''
+	Local oJson       := Nil
+
+	If lRet := GetToken( ::cUrl, ::cUserName, ::cPassWord, @cToken, @cError )
+
+		aAdd( aHeader, 'Authorization: ' + cToken       )
+		aAdd( aHeader, 'Accept: application/json'       )
+		aAdd( aHeader, 'Content-Type: application/json' )
+
+		cResponse := HTTPQuote ( ::cUrl + cPath, 'PUT', , EncodeUtf8( '[' + cJsonAluno + ']' ), 120, aHeader, @cHeaderRet )
+
+		FWJsonDeserialize( cResponse, @oJson )
+
+		lRet := aScan( ClassDataArr(oJson), { |X| AllTrim( UPPER( X[1] ) ) == 'ERRORS' } ) == 0
+
+		If ! lRet
+
+			cError := oJson:errors:description + CRLF
+
+			If ValType( oJson:errors:message ) == 'C'
+
+				cError := oJson:errors:message
+
+			ElseIf ValType( oJson:errors:message ) == 'O'
+
+				aErrors := aClone( ClassDataArr( oJson:errors:message:aluno ) )
+
+				For nX := 1 To Len( aErrors )
+
+					cError += aErrors[ nX, 1 ] + ': ' + aErrors[ nX, 2 ] + CRLF
+
+				Next nX
+
+			End If
+
+		End If
 
 	End If
 
@@ -108,129 +189,54 @@ Método de Exclusão da classe BraviApi
 /*/
 Method Exclui( cId, cError ) Class BraviApi
 
-	Local oRestClient := FWRest():New( ::cUrl )
-	Local cPath       := '/v1/alunos/' + AllTrim( cId )
+	Local lRet        := .T.
+	Local cPath       := '/v1/alunos/'
 	Local aHeader     := {}
+	Local cHeaderRet  := ''
 	Local cToken      := ''
-	Local lRet        := .F.
-
-	oRestClient:setPath( cPath )
+	Local cError      := ''
+	Local cResponse   := ''
+	Local oJson       := Nil
 
 	If lRet := GetToken( ::cUrl, ::cUserName, ::cPassWord, @cToken, @cError )
 
-		aAdd( aHeader, 'Authorization: ' + cToken )
+		aAdd( aHeader, 'Authorization: ' + cToken       )
 		aAdd( aHeader, 'Accept: application/json'       )
 		aAdd( aHeader, 'Content-Type: application/json' )
 
-		lRet := oRestClient:Delete( aHeader )
+		cResponse := HTTPQuote ( ::cUrl + cPath  + cId, 'DELETE', , , 120, aHeader, @cHeaderRet )
+
+		FWJsonDeserialize( cResponse, @oJson )
+
+		lRet := aScan( ClassDataArr(oJson), { |X| AllTrim( UPPER( X[1] ) ) == 'ERRORS' } ) == 0
 
 		If ! lRet
-
-			cError := oRestClient:GetLastError()
-
-		End IF
-
-	End If
-
-Return lRet
-
-/*/{Protheus.doc} Inclui
-Método de Inclusão da classe BraviApi
-@author Elton Teodoro Alves
-@since 08/02/2019
-@version 12.1.17
-@return Logical, Indica se a operação foi bem sucedida
-@param cJsonAluno, characters, Variável com o Json que representam o aluno a ser incluído
-@param cError, characters, Variável passada por referência que será populada com a mensagem de erro retornada pelo Web Service
-@param cId, characters, Variável passada por referência que será populada com o id do estagiário incluido
-/*/
-Method Inclui( cJsonAluno, cError, cId ) Class BraviApi
-
-	Local oRestClient := FWRest():New( ::cUrl )
-	Local cPath       := '/v1/alunos'
-	Local aHeader     := {}
-	Local cToken      := ''
-	Local lRet        := .F.
-	Local nX          := 0
-
-	oRestClient:setPath( cPath )
-	oRestClient:SetPostParams( EncodeUtf8( '[' + cJsonAluno + ']' ) )
-
-	If lRet := GetToken( ::cUrl, ::cUserName, ::cPassWord, @cToken, @cError )
-
-		aAdd( aHeader, 'Authorization: ' + cToken )
-		aAdd( aHeader, 'Content-Type: application/json' )
-		aAdd( aHeader, 'Accept: application/json' )
-
-		oRestClient:Post( aHeader )
-
-		FWJsonDeserialize( oRestClient:GetResult(), @oJson )
-
-		lRet := Type( "oJson:errors" ) # 'U'
-
-		If lRet
-
-			cId := oJson:id
-
-		Else
 
 			cError := oJson:errors:description + CRLF
 
-			aErrors := aClone( ClassDataArr( oJson:errors:message:aluno ) )
+			If ValType( oJson:errors:message ) == 'C'
 
-			For nX := 1 To Len( aErrors )
+				cError := oJson:errors:message
 
-				cError += aErrors[ 1, nX, 1 ] + ': ' + aErrors[ 1, nX, 2 ] + CRLF
+			ElseIf ValType( oJson:errors:message ) == 'O'
 
-			Next nX
+				aErrors := aClone( ClassDataArr( oJson:errors:message:aluno ) )
+
+				For nX := 1 To Len( aErrors )
+
+					cError += aErrors[ nX, 1 ] + ': ' + aErrors[ nX, 2 ] + CRLF
+
+				Next nX
+
+			End If
 
 		End If
-
-
-	End If
-
-Return lRet
-
-/*/{Protheus.doc} Altera
-Método de Alteração da classe BraviApi
-@author Elton Teodoro Alves
-@since 08/02/2019
-@version 12.1.17
-@return Logical, Indica se a operação foi bem sucedida
-@param aAlunos, array, Variável com a lista de objetos que representam os alunos a serem alterados
-@param cError, characters, Variável passada por referência que será populada com a mensagem de erro retornada pelo Web Service
-/*/
-Method Altera( aList, cError ) Class BraviApi
-
-	Local oRestClient := FWRest():New( ::cUrl )
-	Local cPath       := '/v1/alunos/'
-	Local aHeader     := {}
-	Local cToken      := ''
-	Local lRet        := .F.
-
-	oRestClient:setPath( cPath )
-	oRestClient:SetPostParams( FWJsonSerialize( aList, .F., .F. ) )
-
-	If lRet := GetToken( ::cUrl, ::cUserName, ::cPassWord, @cToken, @cError )
-
-		aAdd( aHeader, 'Authorization: ' + cToken )
-		aAdd( aHeader, 'Accept: application/json'       )
-		aAdd( aHeader, 'Content-Type: application/json' )
-
-		lRet := oRestClient:Put( aHeader )
-
-		If ! lRet
-
-			cError := oRestClient:GetLastError()
-
-		End IF
 
 	End If
 
 Return lRet
 
 /*/{Protheus.doc} GetToken
-
 @author Elton Teodoro Alves
 @since 08/02/2019
 @version 12.1.17
@@ -260,7 +266,7 @@ Static Function GetToken( cUrl, cUserName, cPassWord, cToken, cError )
 
 	FWJsonDeserialize( oRestClient:GetResult(), @oJson )
 
-	lRet := Type( "oJson:access_token" ) # 'U'
+	lRet := aScan( ClassDataArr(oJson), { |X| AllTrim( Upper( X[1] ) ) == 'ACCESS_TOKEN' } ) # 0
 
 	If lRet
 
