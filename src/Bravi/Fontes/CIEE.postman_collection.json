@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "923f933b-06aa-49c8-ab88-f3c2d2f42e4f",
+		"name": "CIEE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://api.uniciee.ciee.org.br/v1/auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"bravi1\",\r\n  \"password\": \"bravi@2017\"\r\n}"
+				},
+				"url": {
+					"raw": "https://api.uniciee.ciee.org.br/v1/auth",
+					"protocol": "https",
+					"host": [
+						"api",
+						"uniciee",
+						"ciee",
+						"org",
+						"br"
+					],
+					"path": [
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.uniciee.ciee.org.br/v1/alunos",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2llZS1hdXRoLmNpZWUuYnJhdmkuY29tLmJyIiwiaWF0IjoxNTUwNTg4NDc5LCJleHAiOjE1NTA1OTIwNzksInN1YiI6IjkzNDcwNzg5OTkxIn0.Ue5Mk4OBvy15Lf3zvcXo73GO9TCOoPbUyBopyNaCDGc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 103345,\n        \"matricula\": 1,\n        \"cpf\": \"29278297054\",\n        \"nome\": \"ELTON TEODORO ALVES\",\n        \"apelido\": \"\",\n        \"nascimento\": \"1975-08-13\",\n        \"id_areaconhecimento\": \"\",\n        \"areaconhecimento\": \"\",\n        \"id_cargo\": 0,\n        \"cargo\": \"\",\n        \"id_setor\": 101,\n        \"setor\": \"PresidÃªncia\",\n        \"admissao\": \"2012-04-09\",\n        \"rescisao\": \"2012-04-09\",\n        \"id_situacao\": 0,\n        \"situacao\": \"Ativo\",\n        \"id_local\": 0,\n        \"local\": \"\",\n        \"id_vinculo\": 0,\n        \"vinculo\": \"Mensalista\",\n        \"email\": \"elton.alves@totvs.com.br\",\n        \"celularddd\": 0,\n        \"celularnumero\": 0,\n        \"superior\": \"\",\n        \"id_nivel\": \"\",\n        \"nivelcargo\": \"\",\n        \"login\": \"\",\n        \"id_gerencia\": \"\",\n        \"gerencia\": \"\",\n        \"id_superintendencia\": \"\",\n        \"superintendencia\": \"\",\n        \"empresa\": \"\",\n        \"hierarquia\": \"\"\n    }\n]"
+				},
+				"url": {
+					"raw": "https://api.uniciee.ciee.org.br/v1/alunos",
+					"protocol": "https",
+					"host": [
+						"api",
+						"uniciee",
+						"ciee",
+						"org",
+						"br"
+					],
+					"path": [
+						"v1",
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.uniciee.ciee.org.br/v1/alunos/103346",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2llZS1hdXRoLmNpZWUuYnJhdmkuY29tLmJyIiwiaWF0IjoxNTUwNTk5OTE4LCJleHAiOjE1NTA2MDM1MTgsInN1YiI6bnVsbH0.0vSbfaeLj8TkkbfW4hKRFFKY1-ypt8fIBtHD6feVPOI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.uniciee.ciee.org.br/v1/alunos/103346",
+					"protocol": "https",
+					"host": [
+						"api",
+						"uniciee",
+						"ciee",
+						"org",
+						"br"
+					],
+					"path": [
+						"v1",
+						"alunos",
+						"103346"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.uniciee.ciee.org.br/v1/alunos/103345",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2llZS1hdXRoLmNpZWUuYnJhdmkuY29tLmJyIiwiaWF0IjoxNTUwNTkwMDI4LCJleHAiOjE1NTA1OTM2MjgsInN1YiI6IjkzNDcwNzg5OTkxIn0.u4YwZ8TgJxGbbYWIYafM3rSpUK-Wbok5Vp6GvwBHyk8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.uniciee.ciee.org.br/v1/alunos/103345",
+					"protocol": "https",
+					"host": [
+						"api",
+						"uniciee",
+						"ciee",
+						"org",
+						"br"
+					],
+					"path": [
+						"v1",
+						"alunos",
+						"103345"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.uniciee.ciee.org.br/v1/alunos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2llZS1hdXRoLmNpZWUuYnJhdmkuY29tLmJyIiwiaWF0IjoxNTUwNTg4NDc5LCJleHAiOjE1NTA1OTIwNzksInN1YiI6IjkzNDcwNzg5OTkxIn0.Ue5Mk4OBvy15Lf3zvcXo73GO9TCOoPbUyBopyNaCDGc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"matricula\": 1,\n        \"cpf\": \"29278297054\",\n        \"nome\": \"ELTON TEODORO ALVES\",\n        \"apelido\": \"\",\n        \"nascimento\": \"1975-08-13\",\n        \"id_areaconhecimento\": \"\",\n        \"areaconhecimento\": \"\",\n        \"id_cargo\": 0,\n        \"cargo\": \"\",\n        \"id_setor\": 101,\n        \"setor\": \"PresidÃªncia\",\n        \"admissao\": \"2012-04-09\",\n        \"rescisao\": \"2012-04-09\",\n        \"id_situacao\": 0,\n        \"situacao\": \"Ativo\",\n        \"id_local\": 0,\n        \"local\": \"\",\n        \"id_vinculo\": 0,\n        \"vinculo\": \"Mensalista\",\n        \"email\": \"elton.alves@totvs.com.br\",\n        \"celularddd\": 0,\n        \"celularnumero\": 0,\n        \"superior\": \"\",\n        \"id_nivel\": \"\",\n        \"nivelcargo\": \"\",\n        \"login\": \"\",\n        \"id_gerencia\": \"\",\n        \"gerencia\": \"\",\n        \"id_superintendencia\": \"\",\n        \"superintendencia\": \"\",\n        \"empresa\": \"\",\n        \"hierarquia\": \"\"\n    }\n]"
+				},
+				"url": {
+					"raw": "https://api.uniciee.ciee.org.br/v1/alunos",
+					"protocol": "https",
+					"host": [
+						"api",
+						"uniciee",
+						"ciee",
+						"org",
+						"br"
+					],
+					"path": [
+						"v1",
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
